@@ -2,9 +2,9 @@
 SPA which will show a list of 10 nearby restaurants and the distance in kilometers from your current location.
 
 # DISCLAIMER
-In production, using docker to deploy a frontend made entirely of static files is overkilled, you may want to use a simple CDN instead.
-For demo, you can deploy this docker-compose on a VM (it's more fun than a CDN).
-For development, work locally :)  
+In production, using docker to deploy a frontend made entirely of static files is overkilled, you may want to use a simple CDN instead.\
+For demo, you can deploy this docker-compose on a VM (it's more fun than a CDN).\
+For development, work locally :)
 
 # Repo
 
