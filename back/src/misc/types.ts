@@ -8,7 +8,7 @@ export type GoogleApiPlacesSearchStatus =
     | 'UNKNOWN_ERROR';
 
 // https://developers.google.com/maps/documentation/places/web-service/search-nearby#Geometry
-type GoogleApiLatLngLiteral = {
+export type GoogleApiLatLngLiteral = {
     lat: number;
     lng: number;
 };
@@ -65,6 +65,7 @@ export type GoogleApiData = {
 // Custom Restaurant Info type
 export type RestaurantInfo = {
     businessStatus: string;
+    distanceInKMeters: number;
     location: GoogleApiLatLngLiteral;
     name: string,
     priceLevel: number;

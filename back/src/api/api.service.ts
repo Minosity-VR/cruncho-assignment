@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { RestaurantsQueryDto } from './api.dto';
 import axiosRequestHandler from 'src/misc/axiosRequest';
-import { GoogleApiData, GoogleApiGeometry, RestaurantInfo } from 'src/misc/types';
+import { GoogleApiData, GoogleApiLatLngLiteral, RestaurantInfo } from 'src/misc/types';
+import { distanceCompute } from 'src/misc/distanceCompute';
 
 @Injectable()
 export class ApiService {
@@ -17,7 +18,7 @@ export class ApiService {
     }
 
     // Fetch restaurants data
-    async fetchRestaurants(axiosConfig: object): Promise<{
+    async fetchRestaurants(axiosConfig: object, userPos: GoogleApiLatLngLiteral ): Promise<{
         success: boolean;
         restaurants?: Array<RestaurantInfo>;
         err?: {};
@@ -52,6 +53,7 @@ export class ApiService {
             if (restaurant.geometry.location) {
                 const restaurantInfo: RestaurantInfo = {
                     businessStatus: restaurant.business_status || 'Unknown',
+                    distanceInKMeters: distanceCompute(userPos, restaurant.geometry.location),
                     location: restaurant.geometry.location,
                     name: restaurant.name || 'Unknown',
                     priceLevel: restaurant.price_level || -1,
@@ -72,11 +74,11 @@ export class ApiService {
         const axiosConfig = this.setAxiosConfig({
             lat: query.lat,
             lng: query.lng,
-            radius: parseInt(process.env.SEARCH_RADIUS) || 9999,
+            radius: parseInt(process.env.SEARCH_RADIUS) || 50000, // default max radius
             type: 'restaurant',
         });
 
-        const googleApiResponse = await this.fetchRestaurants(axiosConfig);
+        const googleApiResponse = await this.fetchRestaurants(axiosConfig, { lat: query.lat, lng: query.lng });
 
         return googleApiResponse;
     }
