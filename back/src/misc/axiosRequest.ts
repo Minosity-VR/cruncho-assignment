@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import request from 'axios';
 
-async function axiosRequestHandler(config: AxiosRequestConfig<any>): Promise<{success: boolean, data: {}}> {
+async function axiosRequestHandler(
+    config: AxiosRequestConfig<any>,
+): Promise<{ success: boolean; data?: {}; err?: {} }> {
     // Launch the request
     return axios(config)
         .then((response: AxiosResponse) => {
@@ -29,7 +31,7 @@ async function axiosRequestHandler(config: AxiosRequestConfig<any>): Promise<{su
                 // Something happened in setting up the request and triggered an Error
                 console.log('Error', error.message);
             }
-            return { success: false, data: null }
+            return { success: false, err: error };
         });
 }
 
