@@ -1,10 +1,18 @@
 import React, { FunctionComponent } from 'react';
+import { userIconSvgAsString } from './SvgIconsAsStrings';
 
 type DisplayMapProps = {
     lat: number;
     lng: number;
     zoom?: number;
 };
+
+function addCustomMarker(H: any, map: any, lat: number, lng: number, svgIconasString: string) {
+    const userIcon = new H.map.Icon(svgIconasString, { size: { w: 50, h: 50 } });
+    const userMarker = new H.map.Marker({ lat, lng }, { icon: userIcon });
+
+    map.addObject(userMarker);
+}
 
 export const DisplayMapFC: FunctionComponent<DisplayMapProps> = (props: DisplayMapProps) => {
     // Create a reference to the HTML element we want to put the map on
@@ -34,6 +42,9 @@ export const DisplayMapFC: FunctionComponent<DisplayMapProps> = (props: DisplayM
             zoom: props.zoom || 4,
             pixelRatio: window.devicePixelRatio || 1,
         });
+
+        // Add a marker to display user location
+        addCustomMarker(H, hMap, props.lat, props.lng, userIconSvgAsString);
 
         // MapEvents enables the event system
         // Behavior implements default interactions for pan/zoom (also on mobile touch environments)

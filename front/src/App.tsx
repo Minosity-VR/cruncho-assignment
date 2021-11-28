@@ -22,7 +22,7 @@ function App() {
 
     return (
         <div className='App'>
-            <DisplayMapFC lat={position.lat} lng={position.lng} zoom={14} />
+            <DisplayMapFC lat={position.lat} lng={position.lng} zoom={12} />
         </div>
     );
 }
