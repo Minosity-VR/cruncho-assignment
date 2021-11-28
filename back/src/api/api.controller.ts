@@ -8,6 +8,7 @@ export class ApiController {
 
     @Get('restaurants')
     async findAroundLoc(@Query() query: RestaurantsQueryDto): Promise<object> {
+        console.log('Request on /api/restaurants');
         return this.ApiService.findAroundLoc(query);
     }
 }

@@ -61,3 +61,12 @@ export type GoogleApiData = {
     info_messages?: string;
     next_page_token?: string;
 };
+
+// Custom Restaurant Info type
+export type RestaurantInfo = {
+    businessStatus: string;
+    location: GoogleApiLatLngLiteral;
+    name: string,
+    priceLevel: number;
+    rating: number
+};

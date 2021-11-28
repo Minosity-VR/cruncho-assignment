@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RestaurantsQueryDto } from './api.dto';
 import axiosRequestHandler from 'src/misc/axiosRequest';
-import { GoogleApiData, GoogleApiGeometry } from 'src/misc/types';
+import { GoogleApiData, GoogleApiGeometry, RestaurantInfo } from 'src/misc/types';
 
 @Injectable()
 export class ApiService {
@@ -19,7 +19,7 @@ export class ApiService {
     // Fetch restaurants data
     async fetchRestaurants(axiosConfig: object): Promise<{
         success: boolean;
-        data?: Array<{ businessStatus: string; location: GoogleApiGeometry; priceLevel: number; rating: number }>;
+        restaurants?: Array<RestaurantInfo>;
         err?: {};
     }> {
         const response = await axiosRequestHandler(axiosConfig);
@@ -40,38 +40,40 @@ export class ApiService {
             case 'UNKNOWN_ERROR':
                 return { success: false, err: 'Google API unknown error' };
             case 'ZERO_RESULTS':
-                return { success: true, data: [] };
+                return { success: true, restaurants: [] };
             case 'OK':
                 break;
         }
 
-        const restaurants = [];
+        const restaurants: Array<RestaurantInfo> = [];
 
         googleApiData.results.forEach((restaurant) => {
             // In our case, we do not care about restaurants without locations, as we want to pin them on a map
             if (restaurant.geometry.location) {
-                restaurants.push({
+                const restaurantInfo: RestaurantInfo = {
                     businessStatus: restaurant.business_status || 'Unknown',
                     location: restaurant.geometry.location,
+                    name: restaurant.name || 'Unknown',
                     priceLevel: restaurant.price_level || -1,
                     rating: restaurant.rating || -1,
-                });
+                }
+                restaurants.push(restaurantInfo);
             }
         });
 
-        return { success: true, data: restaurants };
+        return { success: true, restaurants };
     }
 
     async findAroundLoc(query: RestaurantsQueryDto): Promise<{
         success: boolean;
-        data?: Array<{ businessStatus: string; location: GoogleApiGeometry; priceLevel: number; rating: number }>;
+        restaurants?: Array<RestaurantInfo>;
         err?: {};
     }> {
         const axiosConfig = this.setAxiosConfig({
             lat: query.lat,
             lng: query.lng,
             radius: parseInt(process.env.SEARCH_RADIUS) || 9999,
-            type: 'restaurants',
+            type: 'restaurant',
         });
 
         const googleApiResponse = await this.fetchRestaurants(axiosConfig);
