@@ -1,19 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useReducer } from 'react';
+import { DisplayMapFC } from './DisplayMapComponent';
 import './App.css';
 
+type PositionState = {
+    lat: number;
+    lng: number;
+};
+
+type newPosition = GeolocationPosition | { coords: { latitude?: number; longitude?: number } };
+
 function App() {
+    function positionReducer(position: PositionState, action: newPosition) {
+        return { lat: action.coords.latitude || position.lat, lng: action.coords.longitude || position.lng };
+    }
+
+    const [position, posReducer] = useReducer(positionReducer, { lat: 50, lng: 5 });
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(posReducer);
+    }, []);
+
     return (
         <div className='App'>
-            <header className='App-header'>
-                <img src={logo} className='App-logo' alt='logo' />
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-                    Learn React
-                </a>
-            </header>
+            <DisplayMapFC lat={position.lat} lng={position.lng} zoom={14} />
         </div>
     );
 }
