@@ -18,8 +18,8 @@ services:
     networks:
       - cruncho-network
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-#    depends_on:
-#      - backend-cruncho
+    depends_on:
+      - backend-cruncho
 
   certbot:
     image: certbot/certbot:latest
@@ -29,15 +29,15 @@ services:
     networks:
       - cruncho-network
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-#    depends_on:
-#      - backend-cruncho
+    depends_on:
+      - backend-cruncho
 
-#  backend-cruncho:
-#    build:
-#      context: ./back
-#    image: backend-cruncho:${TAG}
-#    networks:
-#      - cruncho-network
+  backend-cruncho:
+    build:
+      context: ./back
+    image: backend-cruncho:${TAG}
+    networks:
+      - cruncho-network
 
 networks:
   cruncho-network:

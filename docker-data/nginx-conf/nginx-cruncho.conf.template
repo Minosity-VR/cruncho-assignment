@@ -1,6 +1,6 @@
-#upstream backend {
-#    server backend-cruncho:{{ backend-port }};
-#}
+upstream backend {
+    server backend-cruncho:{{ backend-port }};
+}
 
 server {
     listen 80;
@@ -24,9 +24,9 @@ server {
     index index.html index.htm;
     client_max_body_size 10M;
 
-#    location /api {
-#        proxy_pass http://backend;
-#    }
+    location /api {
+        proxy_pass http://backend;
+    }
 
     location / {
         # Comment the following line if you want to use a node server for the front

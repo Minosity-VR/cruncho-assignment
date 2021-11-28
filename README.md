@@ -12,14 +12,14 @@ For development, work locally :)
 Front files. See the [README](./front/README.md)
 
 ## back
-There is no back in this project ;)\
-I left the back container commented in the docker-compose to better understand the nginx-template, and how it would work if there was a backend to deploy.
+The backend is here just to hide to google API key. It is still open so anyone who founds it can make request, but I least the key doesn't leak. And I wanted to try NestJS.\
+See the [README](./back/README.md)
 
 ## docker-compose
-We define 2 services in the [docker-compose](./docker-compose.yml) file:
+We define 3 services in the [docker-compose](./docker-compose.yml) file:
 - the [web server container](./front/Dockerfile), based on the `Nginx` official image, listening on ports `80` and `443` and serving the static frontend files
 - the [certbot container](https://hub.docker.com/r/certbot/certbot), used to generate the SSL certificates
-
+- the [backend API](./back/Dockerfile), based on a the `NodeJS` official image, to make requests to Google Places API.
 The `Nginx` container looks for its configuration in a [conf folder](./docker-data/nginx-conf), and shares two other folders with the `Certbot` container, where the SSL certificates are stored.
 
 ## docker-data
@@ -46,15 +46,16 @@ git clone https://github.com/Minosity-VR/cruncho-assignment.git
 cd cruncho-assignment
 ```
 ### env
-Populate the **2** env files **AND** the `Nginx` conf folder if you want a custom one.
+Populate the **3** env files **AND** the `Nginx` conf folder if you want a custom one.
 
 Env files:
 ```bash
 cp .env.template .env
-cp front/.env.template box-ui/.env
+cp front/.env.template front/.env
+cp back/.env.template back/.env
 ```
 Populate those env files with your values.\
-If you add a backend, be careful with values, I didn't implement values checks so you must put the __same__ value in `back/.env` and `./.env` for the `back_port` for instance.
+When populating the backend env, be careful with values, I didn't implement values checks so you must put the __same__ value in `back/.env` and `./.env` for the `back_port` field, for instance.
 
 ### Nginx
 You can make a custom `Nginx` conf by following the next steps, or just launch the `init-letsencrypt.sh` script that will detect that no configuration file are present, will create one from the template and replace the values with thoses you specified in the `./.env`
@@ -65,7 +66,7 @@ cp staging/docker-data/nginx-conf/nginx-cruncho.conf.template staging/docker-dat
 ```
 Modify the backend-port (the same value you set in the backend `.env` file), the domain name and the front files path in the `Nginx` conf file. They are noted as Jinja2 variables, with double braces : `{{ variable }}`.\
 The front files path will be the location of the static files in the container. It is a good practice to put them in the `/var/www` folder, for instance `/var/www/cruncho`, or `/var/www/myAwesomeWebsite`.\
-Note that the front files path must be the same as specified in the `.env` file, because the Dockerfile will use `.env` value.
+Note that the front files path __must be the same as specified in the `.env` file__, because the Dockerfile will use `.env` value.
 
 ## Launching
 
