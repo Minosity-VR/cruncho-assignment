@@ -8,6 +8,7 @@ type GoogleApiLatLngLiteral = {
 export type RestaurantInfo = {
     businessStatus: string;
     location: GoogleApiLatLngLiteral;
+    distanceInKMeters: number;
     name: string;
     priceLevel: number;
     rating: number;

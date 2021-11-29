@@ -26,6 +26,7 @@ function App() {
         if (response.success) {
             const restaurants: Array<RestaurantInfo> = response.data.restaurants;
             mapInfoReducer({ lat: location.coords.latitude, lng: location.coords.longitude, restaurants });
+            return null;
         }
         // else
         console.log('Error fetching nearby restaurants');
@@ -40,7 +41,7 @@ function App() {
 
     return (
         <div className='App'>
-            <DisplayMapFC lat={mapInfo.lat} lng={mapInfo.lng} zoom={12} restaurants={mapInfo.restaurants} />
+            <DisplayMapFC lat={mapInfo.lat} lng={mapInfo.lng} zoom={14} restaurants={mapInfo.restaurants} />
         </div>
     );
 }
