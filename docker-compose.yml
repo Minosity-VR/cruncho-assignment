@@ -6,6 +6,8 @@ services:
     build:
       context: ./front
       args:
+        - REACT_APP_HERE_API_KEY=${REACT_APP_HERE_API_KEY}
+        - REACT_APP_BACK_API_URL=${REACT_APP_BACK_API_URL}
         - front_files=${FRONT_FILES}
     image: nginx-cruncho:${TAG}
     ports:
@@ -38,6 +40,8 @@ services:
     image: backend-cruncho:${TAG}
     networks:
       - cruncho-network
+    env_file:
+      - back/.env
 
 networks:
   cruncho-network:

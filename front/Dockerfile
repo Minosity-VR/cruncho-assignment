@@ -7,7 +7,11 @@ WORKDIR /app
 COPY package.json /app/package.json
 RUN npm install
 
+# The .env is not copied to the Docker image to prevent leaking a secret
 COPY . /app/
+# So we need to define ARG vars, that are available only at build-time
+ARG REACT_APP_HERE_API_KEY
+ARG REACT_APP_BACK_API_URL
 
 RUN npm run build
 

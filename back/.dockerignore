@@ -1,14 +1,13 @@
-# Heavy files
+# Heavy & Dev folders
 node_modules/
-build/
-package-lock.json
+dist/
+test/
 
 # Dev files, useless in container.
 .env.template
 .eslintignore
 .eslintrc.js
-.gitignore
-.prettierrc.js
+.prettierrc
 
 # The .env vars must be ignored during build, as we do not want them to be in the docker image to prevent leaking a secret.
 # For the env vars that must be available during runtime, they will be exported by docker-compose

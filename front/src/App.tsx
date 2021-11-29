@@ -19,6 +19,7 @@ function App() {
         const method: Method = 'GET';
         const axiosConfig = {
             method,
+            mode: 'cors',
             url: `${process.env.REACT_APP_BACK_API_URL}/restaurants?lat=${location.coords.latitude}&lng=${location.coords.longitude}`,
         };
         const response = await axiosRequestHandler(axiosConfig);
