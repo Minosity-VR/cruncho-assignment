@@ -11,8 +11,6 @@ RUN npm install --only=development
 COPY . .
 RUN npm run build
 
-RUN ls -lha /usr/src/app
-
 ## Stage 1: based on the official nginx image, serves the static frontend files
 FROM node:16-alpine as production
 

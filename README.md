@@ -2,17 +2,21 @@
 SPA which will show a list of 10 nearby restaurants and the distance in kilometers from your current location.
 
 # DISCLAIMER
-In production, using docker to deploy on a VM a frontend made entirely of static files is overkilled, you may want to use a simple CDN instead (and a CI to build and update the files after an update).\
+~~In production, using docker to deploy on a VM a frontend made entirely of static files is overkilled, you may want to use a simple CDN instead (and a CI to build and update the files after an update).\
 For demo, you can deploy this docker-compose on a VM (it's more fun than a CDN).\
-For development, work locally :)
+For development, work locally :)~~
+
+Finally I used a backend to hide the Google Places API key, so deploying with docker on a VM is understandable.
 
 # Repo
 
 ## front
-Front files. See the [README](./front/README.md)
+Front files. Uses HERE API to display the map.\
+See the [README](./front/README.md)
 
 ## back
 The backend is here just to hide to google API key. It is still open so anyone who founds it can make request, but I least the key doesn't leak. And I wanted to try NestJS.\
+I could have used the HERE API "Browse" feature, but I wanted to try Google Cloud :)\
 See the [README](./back/README.md)
 
 ## docker-compose
@@ -55,7 +59,11 @@ cp front/.env.template front/.env
 cp back/.env.template back/.env
 ```
 Populate those env files with your values.\
-When populating the backend env, be careful with values, I didn't implement values checks so you must put the __same__ value in `back/.env` and `./.env` for the `back_port` field, for instance.
+\
+When populating the backend env, be careful with values, I didn't implement values checks so you must put the __same__ value in `back/.env` and `./.env` for the `back_port` field, for instance.\
+\
+The frontend env vars are repeated in the main `./.env` file because they are used as build vars by docker-compose.\
+The `./front/.env` files therefore only is used in development (you can let it empty when deploying with docker-compose).
 
 ### Nginx
 You can make a custom `Nginx` conf by following the next steps, or just launch the `init-letsencrypt.sh` script that will detect that no configuration file are present, will create one from the template and replace the values with thoses you specified in the `./.env`
