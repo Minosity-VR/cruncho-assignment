@@ -1,9 +1,11 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import request from 'axios';
 
-async function axiosRequestHandler(
-    config: AxiosRequestConfig<any>,
-): Promise<{ success: boolean; data?: {}; err?: {} }> {
+async function axiosRequestHandler(config: AxiosRequestConfig<any>): Promise<{
+    success: boolean;
+    data?: Record<string, unknown>;
+    err?: AxiosError | AxiosResponse | AxiosRequestConfig | Error;
+}> {
     // Launch the request
     return axios(config)
         .then((response: AxiosResponse) => {

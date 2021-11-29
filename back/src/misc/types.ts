@@ -23,7 +23,7 @@ export type GoogleApiGeometry = {
 
 // https://developers.google.com/maps/documentation/places/web-service/search-nearby#Place
 export type GooglApiPlaces = {
-    address_components?: Array<{}>;
+    address_components?: Array<unknown>;
     adr_address?: string;
     business_status?: string;
     formatted_address?: string;
@@ -34,17 +34,17 @@ export type GooglApiPlaces = {
     icon_mask_base_uri?: string;
     international_phone_number?: string;
     name?: string;
-    opening_hours?: {};
+    opening_hours?: unknown;
     permanently_closed?: boolean;
-    photos?: Array<{}>;
+    photos?: Array<unknown>;
     place_id?: string;
-    plus_code?: {};
+    plus_code?: unknown;
     price_level?: 0 | 1 | 2 | 3 | 4;
     rating?: number;
     reference?: string;
-    reviews?: Array<{}>;
+    reviews?: Array<unknown>;
     scope?: string;
-    types?: Array<{ string }>;
+    types?: Array<string>;
     url?: string;
     user_ratings_total?: number;
     utc_offset?: number;
@@ -67,7 +67,7 @@ export type RestaurantInfo = {
     businessStatus: string;
     distanceInKMeters: number;
     location: GoogleApiLatLngLiteral;
-    name: string,
+    name: string;
     priceLevel: number;
-    rating: number
+    rating: number;
 };

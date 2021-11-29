@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { RestaurantsQueryDto } from './api.dto';
-import axiosRequestHandler from 'src/misc/axiosRequest';
-import { GoogleApiData, GoogleApiLatLngLiteral, RestaurantInfo } from 'src/misc/types';
-import { distanceCompute } from 'src/misc/distanceCompute';
+import axiosRequestHandler from '../misc/axiosRequest';
+import { GoogleApiData, GoogleApiLatLngLiteral, RestaurantInfo } from '../misc/types';
+import { distanceCompute } from '../misc/distanceCompute';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 @Injectable()
 export class ApiService {
@@ -18,10 +19,13 @@ export class ApiService {
     }
 
     // Fetch restaurants data
-    async fetchRestaurants(axiosConfig: object, userPos: GoogleApiLatLngLiteral ): Promise<{
+    async fetchRestaurants(
+        axiosConfig: object,
+        userPos: GoogleApiLatLngLiteral,
+    ): Promise<{
         success: boolean;
         restaurants?: Array<RestaurantInfo>;
-        err?: {};
+        err?: AxiosError | AxiosResponse | AxiosRequestConfig | Error;
     }> {
         const response = await axiosRequestHandler(axiosConfig);
 
@@ -33,13 +37,13 @@ export class ApiService {
 
         switch (googleApiData.status) {
             case 'REQUEST_DENIED':
-                return { success: false, err: 'Google API request denied' };
+                return { success: false, err: new Error('Google API request denied') };
             case 'INVALID_REQUEST':
-                return { success: false, err: 'Google API invalid request' };
+                return { success: false, err: new Error('Google API invalid request') };
             case 'OVER_QUERY_LIMIT':
-                return { success: false, err: 'Google API query limit exceeded' };
+                return { success: false, err: new Error('Google API query limit exceeded') };
             case 'UNKNOWN_ERROR':
-                return { success: false, err: 'Google API unknown error' };
+                return { success: false, err: new Error('Google API unknown error') };
             case 'ZERO_RESULTS':
                 return { success: true, restaurants: [] };
             case 'OK':
@@ -58,7 +62,7 @@ export class ApiService {
                     name: restaurant.name || 'Unknown',
                     priceLevel: restaurant.price_level || -1,
                     rating: restaurant.rating || -1,
-                }
+                };
                 restaurants.push(restaurantInfo);
             }
         });
@@ -69,7 +73,7 @@ export class ApiService {
     async findAroundLoc(query: RestaurantsQueryDto): Promise<{
         success: boolean;
         restaurants?: Array<RestaurantInfo>;
-        err?: {};
+        err?: AxiosError | AxiosResponse | AxiosRequestConfig | Error;
     }> {
         const axiosConfig = this.setAxiosConfig({
             lat: query.lat,
