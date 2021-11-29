@@ -64,7 +64,7 @@ if [ $count_nginx_conf == 0 ]; then
         sed -i "" "s|{{ path/to/front/files }}|$front_files|g" $nginx_path/$destination_conf
         sed -i "" "s|{{ backend-port }}|$back_port|g" $nginx_path/$destination_conf
       elif [ $machine == 'Linux' ]; then
-        sed -i "s|{{ domain }}|$domain|g" $nginx_path/$destination_conf
+        sed -i "s|{{ domain }}|$DOMAIN|g" $nginx_path/$destination_conf
         sed -i "s|{{ path/to/front/files }}|$front_files|g" $nginx_path/$destination_conf
         sed -i "s|{{ backend-port }}|$back_port|g" $nginx_path/$destination_conf
       else
