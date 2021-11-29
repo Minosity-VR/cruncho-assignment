@@ -100,10 +100,10 @@ docker-compose run --rm --entrypoint "\
     -subj '/CN=localhost'" certbot
 echo
 
-# We start nginx and the fake marsha backend server,
+# We start nginx (which also starts the backend because the front has a 'depend_on' field),
 # because of the reverse proxy nginx start fails if backend is missing
 echo "### Starting nginx ..."
-docker-compose up --build --force-recreate -d marsha-mimic nginx-and-front
+docker-compose up --build --force-recreate -d nginx-and-front
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
