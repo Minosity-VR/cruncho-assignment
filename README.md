@@ -80,7 +80,6 @@ Note that the front files path __must be the same as specified in the `.env` fil
 
 If it is the first time launching the services on this server, or if the `docker-data/certbot/conf/live/<your domain>` folder is not yet populated with the `Letsencrypt` certificates, launch the [init-letsencrypt](##init-letsencrypt.sh) script.
 ```bash
-cd staging
 sudo chmod +x init-letsencrypt.sh
 sudo ./init-letsencrypt.sh
 ```

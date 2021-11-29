@@ -60,7 +60,7 @@ if [ $count_nginx_conf == 0 ]; then
       destination_conf="${destination_filename%.*}"
       cp $nginx_path/*.template $nginx_path/$destination_conf
       if [ $machine == 'Mac' ]; then
-        sed -i "" "s|{{ domain }}|$domain|g" $nginx_path/$destination_conf
+        sed -i "" "s|{{ domain }}|$DOMAIN|g" $nginx_path/$destination_conf
         sed -i "" "s|{{ path/to/front/files }}|$front_files|g" $nginx_path/$destination_conf
         sed -i "" "s|{{ backend-port }}|$back_port|g" $nginx_path/$destination_conf
       elif [ $machine == 'Linux' ]; then
@@ -74,8 +74,6 @@ if [ $count_nginx_conf == 0 ]; then
     done
   fi
 fi
-
-exit
 
 if [ -d "$data_path" ]; then
   read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
